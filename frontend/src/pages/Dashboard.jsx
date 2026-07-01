@@ -12,21 +12,21 @@ export default function Dashboard() {
   const syncEverythingWithDatabase = useCallback(async () => {
     try {
       // 1. Stock Sync
-      const stockRes = await fetch('http://localhost:5001/api/inventory/stock');
+      const stockRes = await fetch('https://mandi-system.onrender.com/api/inventory/stock');
       if (stockRes.ok) {
         const stockData = await stockRes.json();
         setStock(Array.isArray(stockData) ? stockData : []);
       }
 
       // 2. Purchases Sync
-      const purchaseRes = await fetch('http://localhost:5001/api/purchases');
+      const purchaseRes = await fetch('https://mandi-system.onrender.com/api/purchases');
       if (purchaseRes.ok) {
         const purchaseData = await purchaseRes.json();
         setPurchases(Array.isArray(purchaseData) ? purchaseData : []);
       }
 
       // 3. Sales Sync
-      const salesRes = await fetch('http://localhost:5001/api/sales');
+      const salesRes = await fetch('https://mandi-system.onrender.com/api/sales');
       if (salesRes.ok) {
         const salesData = await salesRes.json();
         setSales(Array.isArray(salesData) ? salesData : []);
@@ -38,7 +38,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Live Market Setup
-    fetch('http://localhost:5001/api/live-mandi-rates')
+    fetch ('https://mandi-system.onrender.com/api/live-mandi-rates')
       .then(res => res.json())
       .then(data => { 
         setLiveMarketRates(Array.isArray(data) ? data : []); 
