@@ -5,8 +5,12 @@ export default function Purchases() {
   const [purchases, setPurchases] = useState([]);
   const [searchDate, setSearchDate] = useState('');
 
+  // 🟢 FIXED: Clean single secure HTTPS link for fetching
   const getPurchases = () => {
-    fetch('http://https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/purchases/add').then(res => res.json()).then(data => setPurchases(data));
+    fetch('https://mandi-system.onrender.com/api/purchases')
+      .then(res => res.json())
+      .then(data => setPurchases(data))
+      .catch(err => console.error("Error fetching purchases:", err));
   };
 
   useEffect(() => { getPurchases(); }, []);
@@ -34,26 +38,31 @@ export default function Purchases() {
       quantityQuintals: finalQuantity.toFixed(5), // High precision saving
       bagCount: form.bagCount,
       ratePerQuintal: form.ratePerQuintal,
-      mandiTax: form.mandiTax,
-      laborCharges: form.laborCharges,
-      freightCharges: form.freightCharges
+      mandiTax: form.mandiTax || 0,
+      laborCharges: form.laborCharges || 0,
+      freightCharges: form.freightCharges || 0
     };
 
-    const res = await fetch('http://https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/purchases/add/add', {
+    // 🟢 FIXED: Removed duplicate paths and cleaned the endpoint to standard secure POST
+    const res = await fetch('https://mandi-system.onrender.com/api/purchases', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(submissionData)
     });
+    
     if (res.ok) {
       alert("Purchase Record Saved Successfully!");
       setForm({ sellerName: '', commodity: '', qtl: '', kg: '', gm: '', bagCount: '', ratePerQuintal: '', mandiTax: '', laborCharges: '', freightCharges: '' });
       getPurchases();
+    } else {
+      alert("Server error: Entry save nahi ho payi bhai!");
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Cyber system se ye khareedi delete karein?")) {
-      const res = await fetch(`http://https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/purchases/add/${id}`, { method: 'DELETE' });
+      // 🟢 FIXED: Single secure HTTPS link for delete route
+      const res = await fetch(`https://mandi-system.onrender.com/api/purchases/${id}`, { method: 'DELETE' });
       if (res.ok) { getPurchases(); }
     }
   };
@@ -70,7 +79,6 @@ export default function Purchases() {
 
   // Decimal se wapas Qtl, Kg, Gm padhne wala helper function (taki table sunder dikhe)
   const formatMandiWeight = (qtlDecimal) => {
-    const totalKg = qtlDecimal * 100;
     const qtl = Math.floor(qtlDecimal);
     const remainderKg = (qtlDecimal - qtl) * 100;
     const kg = Math.floor(remainderKg);
@@ -87,7 +95,6 @@ export default function Purchases() {
             <input type="text" placeholder="Kisaan / Seller Name" value={form.sellerName} onChange={e => setForm({ ...form, sellerName: e.target.value })} className="w-full p-2.5 border border-stone-300 rounded-lg text-sm" required />
             <input type="text" placeholder="Fasal Ka Naam" value={form.commodity} onChange={e => setForm({ ...form, commodity: e.target.value })} className="w-full p-2.5 border border-stone-300 rounded-lg text-sm" required />
             
-            {/* NEW TRIPLE WEIGHT INPUTS */}
             <div className="bg-stone-50 p-3 rounded-xl border border-stone-200 space-y-2">
               <label className="text-xs font-black text-stone-600 block uppercase tracking-wider">⚖️ Kul Wazan (Split Entry):</label>
               <div className="grid grid-cols-3 gap-1.5">
@@ -154,6 +161,7 @@ export default function Purchases() {
             <tbody>
               {filteredPurchases.map(p => {
                 const baseCropPrice = Number(p.quantityQuintals) * Number(p.ratePerQuintal);
+                const amt = p.totalAmount ? p.totalAmount : (baseCropPrice + Number(p.mandiTax || 0) + Number(p.laborCharges || 0) + Number(p.freightCharges || 0));
                 return (
                   <tr key={p._id} className="border-b hover:bg-stone-50/80 transition">
                     <td className="p-3">
@@ -161,7 +169,6 @@ export default function Purchases() {
                       <div className="font-medium text-stone-800">{p.sellerName}</div>
                     </td>
                     <td className="p-3 uppercase text-emerald-800 font-bold">{p.commodity}</td>
-                    {/* WAZAN SPLIT VIEW DISPLAY */}
                     <td className="p-3 font-bold text-stone-700 whitespace-nowrap">{formatMandiWeight(p.quantityQuintals)}</td>
                     <td className="p-3">
                       <div className="font-bold text-stone-800">₹{baseCropPrice.toFixed(2)}</div>
@@ -170,7 +177,7 @@ export default function Purchases() {
                     <td className="p-3 text-xs text-stone-500">
                       <div>Tax: ₹{p.mandiTax || 0} | Lab: ₹{p.laborCharges || 0} | Bhd: ₹{p.freightCharges || 0}</div>
                     </td>
-                    <td className="p-3 font-black text-emerald-800 text-base">₹{p.totalAmount.toFixed(2)}</td>
+                    <td className="p-3 font-black text-emerald-800 text-base">₹{amt.toFixed(2)}</td>
                     <td className="p-3 text-center">
                       <button onClick={() => handleDelete(p._id)} className="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-md text-xs font-bold transition">Delete</button>
                     </td>
