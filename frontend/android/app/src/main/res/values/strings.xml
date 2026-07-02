@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mandi Ledger</string>
+    <string name="title_activity_main">Mandi Ledger</string>
+    <string name="package_name">com.priyanshu.mandiledger</string>
+    <string name="custom_url_scheme">com.priyanshu.mandiledger</string>
+</resources>
