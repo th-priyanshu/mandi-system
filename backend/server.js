@@ -52,8 +52,8 @@ const salesRoutes = require('./routes/salesRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const authRoutes = require('./routes/authRoutes');
 
-app.use('/api/purchases', purchaseRoutes);
-app.use('/api/sales', salesRoutes);
+app.use('https://mandi-system.onrender.com/api/purchases/add', purchaseRoutes);
+app.use('https://mandi-system.onrender.com/api/sales/add', salesRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/auth', authRoutes);
 

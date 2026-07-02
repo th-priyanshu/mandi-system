@@ -6,7 +6,7 @@ export default function Purchases() {
   const [searchDate, setSearchDate] = useState('');
 
   const getPurchases = () => {
-    fetch('http://https://mandi-system.onrender.com/api/purchases').then(res => res.json()).then(data => setPurchases(data));
+    fetch('http://https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/purchases/add').then(res => res.json()).then(data => setPurchases(data));
   };
 
   useEffect(() => { getPurchases(); }, []);
@@ -39,7 +39,7 @@ export default function Purchases() {
       freightCharges: form.freightCharges
     };
 
-    const res = await fetch('http://https://mandi-system.onrender.com/api/purchases/add', {
+    const res = await fetch('http://https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/purchases/add/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(submissionData)
@@ -53,7 +53,7 @@ export default function Purchases() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Cyber system se ye khareedi delete karein?")) {
-      const res = await fetch(`http://https://mandi-system.onrender.com/api/purchases/${id}`, { method: 'DELETE' });
+      const res = await fetch(`http://https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/purchases/add/${id}`, { method: 'DELETE' });
       if (res.ok) { getPurchases(); }
     }
   };

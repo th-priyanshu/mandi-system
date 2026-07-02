@@ -19,14 +19,14 @@ export default function Dashboard() {
       }
 
       // 2. Purchases Sync
-      const purchaseRes = await fetch('https://mandi-system.onrender.com/api/purchases');
+      const purchaseRes = await fetch('https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/purchases/add');
       if (purchaseRes.ok) {
         const purchaseData = await purchaseRes.json();
         setPurchases(Array.isArray(purchaseData) ? purchaseData : []);
       }
 
       // 3. Sales Sync
-      const salesRes = await fetch('https://mandi-system.onrender.com/api/sales');
+      const salesRes = await fetch('https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/sales/add');
       if (salesRes.ok) {
         const salesData = await salesRes.json();
         setSales(Array.isArray(salesData) ? salesData : []);

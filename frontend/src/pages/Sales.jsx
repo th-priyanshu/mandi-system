@@ -8,7 +8,7 @@ export default function Sales() {
   const [searchParty, setSearchParty] = useState('');
 
   const getSales = () => {
-    fetch('https://mandi-system.onrender.com/api/sales').then(res => res.json()).then(data => setSales(data));
+    fetch('https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/sales/add').then(res => res.json()).then(data => setSales(data));
   };
 
   const getStock = () => {
@@ -59,7 +59,7 @@ export default function Sales() {
       paymentStatus: form.paymentStatus
     };
 
-    const res = await fetch('https://mandi-system.onrender.com/api/sales/add', {
+    const res = await fetch('https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/sales/add/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(submissionData)
@@ -89,7 +89,7 @@ export default function Sales() {
       return;
     }
 
-    const res = await fetch(`https://mandi-system.onrender.com/api/sales/approve-payment/${id}`, {
+    const res = await fetch(`https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/sales/add/approve-payment/${id}`, {
       method: 'PATCH',
       headers: { 
         'Content-Type': 'application/json'
@@ -107,7 +107,7 @@ export default function Sales() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Bikri Entry delete karein? Isse stock wapas jud jayega.")) {
-      const res = await fetch(`https://mandi-system.onrender.com/api/sales/${id}`, { method: 'DELETE' });
+      const res = await fetch(`https://mandi-system.onrender.comhttps://mandi-system.onrender.com/api/sales/add/${id}`, { method: 'DELETE' });
       if (res.ok) { getSales(); getStock(); }
     }
   };
