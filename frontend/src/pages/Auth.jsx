@@ -15,7 +15,7 @@ export default function Auth({ onLoginSuccess }) {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch('http://https://mandi-system.onrender.com/api/auth/login', {
+      const res = await fetch('https://mandi-system.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
