@@ -15,11 +15,10 @@ export default function Purchases() {
 
   useEffect(() => { getPurchases(); }, []);
 
-  // Teeno units ko milakar ek single Quintal decimal wazan banana
   const calculateTotalQuintals = () => {
     const q = Number(form.qtl || 0);
-    const k = Number(form.kg || 0) / 100; // 100 kg = 1 quintal
-    const g = Number(form.gm || 0) / 100000; // 100,000 gm = 1 quintal
+    const k = Number(form.kg || 0) / 100;
+    const g = Number(form.gm || 0) / 100000;
     return q + k + g;
   };
 
@@ -35,7 +34,7 @@ export default function Purchases() {
     const submissionData = {
       sellerName: form.sellerName,
       commodity: form.commodity,
-      quantityQuintals: finalQuantity.toFixed(5), // High precision saving
+      quantityQuintals: finalQuantity.toFixed(5),
       bagCount: form.bagCount,
       ratePerQuintal: form.ratePerQuintal,
       mandiTax: form.mandiTax || 0,
@@ -43,7 +42,7 @@ export default function Purchases() {
       freightCharges: form.freightCharges || 0
     };
 
-    // 🟢 FIXED: Removed duplicate paths and cleaned the endpoint to standard secure POST
+    // 🟢 FIXED: Clean single secure POST endpoint matched with backend
     const res = await fetch('https://mandi-system.onrender.com/api/purchases', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -61,7 +60,7 @@ export default function Purchases() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Cyber system se ye khareedi delete karein?")) {
-      // 🟢 FIXED: Single secure HTTPS link for delete route
+      // 🟢 FIXED: Clean single secure DELETE endpoint
       const res = await fetch(`https://mandi-system.onrender.com/api/purchases/${id}`, { method: 'DELETE' });
       if (res.ok) { getPurchases(); }
     }
@@ -77,7 +76,6 @@ export default function Purchases() {
   const extraCharges = Number(form.mandiTax || 0) + Number(form.laborCharges || 0) + Number(form.freightCharges || 0);
   const netTotal = cropTotal + extraCharges;
 
-  // Decimal se wapas Qtl, Kg, Gm padhne wala helper function (taki table sunder dikhe)
   const formatMandiWeight = (qtlDecimal) => {
     const qtl = Math.floor(qtlDecimal);
     const remainderKg = (qtlDecimal - qtl) * 100;

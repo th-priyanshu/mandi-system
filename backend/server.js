@@ -8,8 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🌟 CLOUD DATABASE CONFIGURATION: 
-// Agar environment variable milega toh cloud par chalega, nahi toh local backup par fallback karega.
+// 🌟 CLOUD DATABASE CONFIGURATION
 const dbConnectionString = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mandi_trade_db';
 
 mongoose.connect(dbConnectionString, {
@@ -18,7 +17,7 @@ mongoose.connect(dbConnectionString, {
 }).then(() => console.log("📡 MongoDB Connected Successfully to Cloud Database!"))
   .catch(err => console.log("Database connection error: ", err));
 
-// 📡 Live Government API Connector (Aapka purana perfect code)
+// 📡 Live Government API Connector
 app.get('/api/live-mandi-rates', async (req, res) => {
     try {
         const apiKey = '579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b'; 
@@ -52,8 +51,9 @@ const salesRoutes = require('./routes/salesRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const authRoutes = require('./routes/authRoutes');
 
-app.use('https://mandi-system.onrender.com/api/purchases/add', purchaseRoutes);
-app.use('https://mandi-system.onrender.com/api/sales/add', salesRoutes);
+// 🟢 FIXED: Standard relative paths (No full render URLs here)
+app.use('/api/purchases', purchaseRoutes);
+app.use('/api/sales', salesRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/auth', authRoutes);
 
